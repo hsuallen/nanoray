@@ -5,6 +5,8 @@
 
 #include <stdbool.h>
 
+#define VEC(x, y, z) ((Vector){(x), (y), (z)})
+
 typedef double Scalar;
 typedef struct Vector Vector;
 
@@ -12,7 +14,7 @@ struct Vector {
 	Scalar x, y, z;
 };
 
-extern Vector v_zero;
+extern const Vector v_zero;
 
 Vector v_add(Vector, Vector);
 Vector v_sub(Vector, Vector);

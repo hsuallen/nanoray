@@ -1,12 +1,17 @@
 // Copyright 2015 Allen Hsu.
 
 #include "vector.h"
-#include <stdio.h>
+
 #include <math.h>
+#include <stdio.h>
 
-static Scalar epsilon = 10e-8;
+// Constants
 
-Vector v_zero = (Vector){0, 0, 0};
+static const Scalar epsilon = 10e-8;
+
+const Vector v_zero = VEC(0, 0, 0);
+
+// Vector operations
 
 Vector v_add(Vector u, Vector v) {
 	return (Vector){u.x + v.x, u.y + v.y, u.z + v.z};
@@ -47,6 +52,8 @@ Scalar v_norm_sqr(Vector v) {
 Vector v_unit(Vector v) {
 	return v_mul(v, 1.0 / v_norm(v));
 }
+
+// Approximate equality predicates
 
 bool s_equal(Scalar x, Scalar y) {
 	return fabs(x - y) < epsilon;
