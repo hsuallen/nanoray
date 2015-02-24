@@ -1,29 +1,12 @@
 // Copyright 2015 Allen Hsu.
 
+#include "test_common.h"
+
 #include "vector.h"
 
 #include <math.h>
-#include <stdio.h>
 
-// Macros
-
-#define  V_EQ(s, u, v) CHECK(s,u,v,v_equal,==)
-#define V_NEQ(s, u, v) CHECK(s,u,v,!v_equal,!=)
-#define  S_EQ(s, x, y) CHECK(s,x,y,s_equal,==)
-#define S_NEQ(s, x, y) CHECK(s,x,y,!s_equal,!=)
-
-#define CHECK(s,x,y,pred,symbol) do { \
-	if (!pred((x), (y))) { \
-		printf("[%d] \"" s "\": " #x " " #symbol " " #y "\n", test_count); \
-		fails++; \
-	} \
-	test_count++; \
-} while(0);
-
-// Globals
-
-static int test_count = 0;
-static int fails = 0;
+TESTING(vector);
 
 // Constants
 
@@ -141,9 +124,10 @@ static void test_unit(void) {
 	S_EQ("unit(w).y = 1", v_unit(w).y, 1);
 }
 
-// Main
+// Test all
 
-int main(void) {
+TestResult test_all_vector(void) {
+	BEGIN_TESTS();
 	test_add();
 	test_sub();
 	test_mul();
@@ -153,10 +137,5 @@ int main(void) {
 	test_norm();
 	test_norm_sqr();
 	test_unit();
-	if (fails == 0) {
-		printf("All tests (%d) succeeded.\n", test_count);
-		return 0;
-	}
-	printf("FAIL: %d test(s) failed.\n", fails);
-	return 1;
+	END_TESTS();
 }
