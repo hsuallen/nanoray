@@ -13,7 +13,9 @@ TESTING(intersect);
 
 static const Vector ux = VEC(1, 0, 0);
 static const Vector uy = VEC(0, 1, 0);
+static const Vector uz = VEC(0, 0, 1);
 static const Vector uxy = VEC(M_SQRT1_2, M_SQRT1_2, 0);
+static const Vector uxz = VEC(M_SQRT1_2, 0, M_SQRT1_2);
 static const Vector w = VEC(2, 4, 3);
 
 // Tests
@@ -30,6 +32,28 @@ static void test_extend(void) {
 	V_EQ("i,j -> 1 != j,i -> 1",
 		extend(RAY(ux, uy), 1),
 		extend(RAY(uy, ux), 1));
+	V_NEQ("0,j -> 1 != 0,i -> 1",
+		extend(RAY(v_zero, uy), 1),
+		extend(RAY(v_zero, ux), 1));
+}
+
+static void test_intersect_plane(void) {
+	S_EQ("0,i ∩ k->0 = 0", intersect(RAY(v_zero, ux), PLANE(uz, 0)), 0);
+	S_EQ("i,(-i) ∩ k->0 = 0", intersect(RAY(ux, v_neg(ux)), PLANE(uz, 0)), 0);
+	S_EQ("0,k ∩ k->0 = 0", intersect(RAY(v_zero, uz), PLANE(uz, 0)), 0);
+	S_EQ("j,(-k) ∩ k->0 = 0", intersect(RAY(uy, v_neg(uz)), PLANE(uz, 0)), 0);
+	S_EQ("0,k ∩ k->5 = 5", intersect(RAY(v_zero, uz), PLANE(uz, 5)), 5);
+	S_EQ("k,i ∩ k->0 = -1", intersect(RAY(uz, ux), PLANE(uz, 0)), -1);
+	S_EQ("k,i ∩ -k->0 = -1", intersect(RAY(uz, ux), PLANE(v_neg(uz), 0)), -1);
+	S_EQ("k,-k ∩ k->0 = 1", intersect(RAY(uz, v_neg(uz)), PLANE(uz, 0)), 1);
+	S_EQ("k,-k ∩ -k->0 = 1",
+		intersect(RAY(uz, v_neg(uz)), PLANE(v_neg(uz), 0)), 1);
+	S_EQ("k,k ∩ k->0 = -1", intersect(RAY(uz, uz), PLANE(uz, 0)), -1);
+	S_EQ("k,k ∩ -k->0 = -1", intersect(RAY(uz, uz), PLANE(v_neg(uz), 0)), -1);
+	S_EQ("-3k,4i ∩ k->0 = -1",
+			intersect(RAY(v_mul(uz, -3), v_mul(ux, 4)), PLANE(uz, 0)), -1);
+	S_EQ("0,[1/√2 0 1/√2] ∩ [1/√2 0 1/√2]->10 = 10",
+		intersect(RAY(v_zero, uxz), PLANE(uxz, 10)), 10); 
 }
 
 // Test all
@@ -37,5 +61,6 @@ static void test_extend(void) {
 TestResult test_all_intersect(void) {
 	BEGIN_TESTS();
 	test_extend();
+	test_intersect_plane();
 	END_TESTS();
 }
