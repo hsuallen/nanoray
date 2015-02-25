@@ -5,15 +5,19 @@
 
 #include "vector.h"
 
-// #define MK_SPHERE(x, y, z, r) ((Surface){ SPHERE, VEC(x, y, z), r})
+#define RAY(p, d) ((Ray){p, d})
+#define SPHERE(c, r) ((Surface){T_SPHERE, c, r})
+#define PLANE(n, d) ((Plane){T_PLANE, n, d})
+
+typedef struct Ray Ray;
 
 struct Ray {
-	Vector position;
-	Vector direction;
+	Vector pos;
+	Vector dir;
 };
 
 struct Surface {
-	enum { SPHERE, PLANE } type;
+	enum { T_SPHERE, T_PLANE } type;
 	union {
 		struct {
 			Vector center;
@@ -25,5 +29,7 @@ struct Surface {
 		} plane;
 	};
 };
+
+Vector extend(Ray r, Scalar t);
 
 #endif
