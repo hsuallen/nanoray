@@ -4,18 +4,23 @@
 
 #include <math.h>
 
-static Scalar square(Scalar s) {
-	return s * s;
+// Returns the square of the value.
+static Scalar square(Scalar x) {
+	return x * x;
 }
 
-static Scalar sgn(Scalar s) {
-	return (s >= 0) ? 1 : -1;
+// Returns the sign of the value (+1 or -1).
+static Scalar sgn(Scalar x) {
+	return (x >= 0) ? 1 : -1;
 }
 
+// Returns a point on the ray t away from its origin.
 Vector extend(Ray r, Scalar t) {
 	return v_add(r.pos, v_mul(r.dir, t));
 }
 
+// Finds the closest intersection of the ray with the surface, returning the
+// t-value for the ray. Returns -1 if there is no intersection.
 Scalar intersect(Ray r, Surface s) {
 	switch (s.type) {
 		case T_SPHERE:;

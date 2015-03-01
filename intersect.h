@@ -33,7 +33,7 @@ struct Surface {
 	};
 };
 
-Vector extend(Ray r, Scalar t);
-Scalar intersect(Ray r, Surface s);
+Vector extend(Ray, Scalar);
+Scalar intersect(Ray, Surface);
 
 #endif

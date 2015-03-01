@@ -58,12 +58,20 @@ static void test_intersect_plane(void) {
 
 static void test_intersect_sphere(void) {
 	S_EQ("0,i ∩ 0R3 = 3", intersect(RAY(v_zero, ux), SPHERE(v_zero, 3)), 3);
+	S_EQ("i,i ∩ iR2 = 2", intersect(RAY(ux, ux), SPHERE(ux, 2)), 2);
+	S_EQ("-i,i ∩ iR2 = 0", intersect(RAY(v_neg(ux), ux), SPHERE(ux, 2)), 0);
 	S_EQ("k,k ∩ 0R1 = 0", intersect(RAY(uz, uz), SPHERE(v_zero, 1)), 0);
 	S_EQ("k,-k ∩ 0R1 = 0", intersect(RAY(uz, v_neg(uz)), SPHERE(v_zero, 1)), 0);
 	S_EQ("3i,-i ∩ 0R1 = 2",
 		intersect(RAY(v_mul(ux, 3), v_neg(ux)), SPHERE(v_zero, 1)), 2);
 	S_EQ("[5 0 -5],k ∩ 0R5 = 5",
 		intersect(RAY(VEC(5, 0, -5), uz), SPHERE(v_zero, 5)), 5);
+	S_EQ("i,i ∩ 0R0.5 = -1", intersect(RAY(ux, ux), SPHERE(v_zero, 0.5)), -1);
+	S_EQ("0,i ∩ kR0.9 = -1", intersect(RAY(v_zero, ux), SPHERE(uz, 0.9)), -1);
+	S_EQ("5*i,j ∩ 4*iR2 = √3",
+		intersect(RAY(v_mul(ux, 5), uy), SPHERE(v_mul(ux, 4), 2)), sqrt(3));
+	S_NEQ("k,-j ∩ iR99 != 99",
+		intersect(RAY(uz, v_neg(uy)), SPHERE(ux, 99)), 99);
 }
 
 // Test all
