@@ -14,18 +14,25 @@ struct TestResult {
 
 // Comparison and checking
 
-#define  V_EQ(s, u, v) CHECK(s,u,v,v_equal,==)
-#define V_NEQ(s, u, v) CHECK(s,u,v,!v_equal,!=)
-#define  S_EQ(s, x, y) CHECK(s,x,y,s_equal,==)
-#define S_NEQ(s, x, y) CHECK(s,x,y,!s_equal,!=)
+#define  V_EQ(s, u, v) CHECK(s, u, v, v_equal, v_print, true)
+#define V_NEQ(s, u, v) CHECK(s, u, v, !v_equal, v_print, false)
+#define  S_EQ(s, x, y) CHECK(s, x, y, s_equal, s_print, true)
+#define S_NEQ(s, x, y) CHECK(s, x, y, !s_equal, s_print, false)
 
-#define CHECK(s,x,y,pred,symbol) do { \
+#define CHECK(label, x, y, pred, print, same) do { \
 	if (!pred((x), (y))) { \
 		if (first) { \
 			printf("failed\n"); \
 			first = false; \
 		} \
-		printf("[%d] \"" s "\": " #x " " #symbol " " #y "\n", test_count); \
+		printf("[%d] \"" label "\": expected ", test_count); \
+		if (!same) { \
+			printf("anything but "); \
+		} \
+		print((y)); \
+		printf(", got "); \
+		print((x)); \
+		putchar('\n'); \
 		fails++; \
 	} \
 	test_count++; \

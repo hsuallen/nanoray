@@ -62,3 +62,13 @@ bool s_equal(Scalar x, Scalar y) {
 bool v_equal(Vector u, Vector v) {
 	return s_equal(u.x, v.x) && s_equal(u.y, v.y) && s_equal(u.z, v.z);
 }
+
+// Printing
+
+void s_print(Scalar x) {
+	printf("%.2lf", x);
+}
+
+void v_print(Vector v) {
+	printf("[%.2lf %.2lf %.2lf]", v.x, v.y, v.z);
+}

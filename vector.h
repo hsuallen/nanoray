@@ -29,4 +29,7 @@ Vector v_unit(Vector);
 bool s_equal(Scalar, Scalar);
 bool v_equal(Vector, Vector);
 
+void s_print(Scalar);
+void v_print(Vector);
+
 #endif
