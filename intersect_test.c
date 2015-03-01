@@ -56,11 +56,22 @@ static void test_intersect_plane(void) {
 		intersect(RAY(v_zero, uxz), PLANE(uxz, 10)), 10); 
 }
 
+static void test_intersect_sphere(void) {
+	S_EQ("0,i ∩ 0R3 = 3", intersect(RAY(v_zero, ux), SPHERE(v_zero, 3)), 3);
+	S_EQ("k,k ∩ 0R1 = 0", intersect(RAY(uz, uz), SPHERE(v_zero, 1)), 0);
+	S_EQ("k,-k ∩ 0R1 = 0", intersect(RAY(uz, v_neg(uz)), SPHERE(v_zero, 1)), 0);
+	S_EQ("3i,-i ∩ 0R1 = 2",
+		intersect(RAY(v_mul(ux, 3), v_neg(ux)), SPHERE(v_zero, 1)), 2);
+	S_EQ("[5 0 -5],k ∩ 0R5 = 5",
+		intersect(RAY(VEC(5, 0, -5), uz), SPHERE(v_zero, 5)), 5);
+}
+
 // Test all
 
 TestResult test_all_intersect(void) {
 	BEGIN_TESTS();
 	test_extend();
 	test_intersect_plane();
+	test_intersect_sphere();
 	END_TESTS();
 }

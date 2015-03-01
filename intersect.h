@@ -23,7 +23,7 @@ struct Surface {
 	char _pad[4];
 	union {
 		struct {
-			Vector center;
+			Vector pos;
 			Scalar radius;
 		} sphere;
 		struct {
